@@ -34,19 +34,6 @@ SQL> alter table borrower add primary key(rollno);
 
 Table altered.
 
-SQL*Plus: Release 21.0.0.0.0 - Production on Thu Aug 7 20:18:47 2025
-Version 21.3.0.0.0
-
-Copyright (c) 1982, 2021, Oracle.  All rights reserved.
-
-Enter user-name: system
-Enter password:
-Last Successful login time: Thu Aug 07 2025 20:03:40 +05:30
-
-Connected to:
-Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
-Version 21.3.0.0.0
-
 SQL> insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status');
 Enter value for rollno: 101
 Enter value for name: pooja
