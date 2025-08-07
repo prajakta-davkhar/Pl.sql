@@ -1,157 +1,30 @@
-SQL*Plus: Release 21.0.0.0.0 - Production on Thu Aug 7 11:11:21 2025
-Version 21.3.0.0.0
-
-Copyright (c) 1982, 2021, Oracle.  All rights reserved.
-
-Enter user-name: system
-Enter password:
-Last Successful login time: Thu Aug 07 2025 10:59:36 +05:30
-
-Connected to:
-Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
-Version 21.3.0.0.0
-
-SQL> create table borrower(rollno number(3),name varchar(20),nameofbook varchar(20),issuedate date,status char(1));
-
-Table created.
-
-SQL> select sysdate from dual;
-
-SYSDATE
----------
-07-AUG-25
-
-SQL> desc borrower;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- ROLLNO                                             NUMBER(3)
- NAME                                               VARCHAR2(20)
- NAMEOFBOOK                                         VARCHAR2(20)
- ISSUEDATE                                          DATE
- STATUS                                             CHAR(1)
-
-SQL> alter table borrower add primary key(rollno);
-
-Table altered.
-SQL> insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status');
-Enter value for rollno: 101
-Enter value for name: pooja
-Enter value for nameofbook: dbms
-Enter value for issuedate: 06-jul-25
-Enter value for status: I
-old   1: insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status')
-new   1: insert into borrower (rollno,name,nameofbook,issuedate,status) values(101,'pooja','dbms','06-jul-25','I')
-
-1 row created.
-
-SQL> insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status');
-Enter value for rollno: 102
-Enter value for name: divya
-Enter value for nameofbook: java
-Enter value for issuedate: 04-aug-25
-Enter value for status: I
-old   1: insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status')
-new   1: insert into borrower (rollno,name,nameofbook,issuedate,status) values(102,'divya','java','04-aug-25','I')
-
-1 row created.
-
-SQL> insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status');
-Enter value for rollno: 103
-Enter value for name: dipti
-Enter value for nameofbook: css
-Enter value for issuedate: 10-jun-25
-Enter value for status: I
-old   1: insert into borrower (rollno,name,nameofbook,issuedate,status) values(&rollno,'&name','&nameofbook','&issuedate','&status')
-new   1: insert into borrower (rollno,name,nameofbook,issuedate,status) values(103,'dipti','css','10-jun-25','I')
-
-1 row created.
-
-SQL> select * from borrower;
-
-    ROLLNO NAME                 NAMEOFBOOK           ISSUEDATE S
----------- -------------------- -------------------- --------- -
-       101 pooja                dbms                 06-JUL-25 I
-       102 divya                java                 04-AUG-25 I
-       103 dipti                css                  10-JUN-25 I
-
-SQL> create table fine(rollno number(3),rdate date,amount number(6,2));
-
-Table created.
-
-SQL> insert into fine (rollno,rdate,amount) values (&rollno,'&rdate','&amount');
-Enter value for rollno: 101
-Enter value for rdate: 01-aug-25
-Enter value for amount: 100
-old   1: insert into fine (rollno,rdate,amount) values (&rollno,'&rdate','&amount')
-new   1: insert into fine (rollno,rdate,amount) values (101,'01-aug-25','100')
-
-1 row created.
-
-SQL>  insert into fine (rollno,rdate,amount) values (&rollno,'&rdate','&amount');
-Enter value for rollno: 102
-Enter value for rdate: 09-aug-25
-Enter value for amount: 50
-old   1:  insert into fine (rollno,rdate,amount) values (&rollno,'&rdate','&amount')
-new   1:  insert into fine (rollno,rdate,amount) values (102,'09-aug-25','50')
-
-1 row created.
-
-SQL>  insert into fine (rollno,rdate,amount) values (&rollno,'&rdate','&amount');
-Enter value for rollno: 103
-Enter value for rdate: 02-aug-25
-Enter value for amount: 150
-old   1:  insert into fine (rollno,rdate,amount) values (&rollno,'&rdate','&amount')
-new   1:  insert into fine (rollno,rdate,amount) values (103,'02-aug-25','150')
-
-1 row created.
-
-SQL> select * from fine;
-
-    ROLLNO RDATE         AMOUNT
----------- --------- ----------
-       101 01-AUG-25        100
-       102 09-AUG-25         50
-       103 02-AUG-25        150
-
-
-SQL> @C:\Users\Prajakta\Desktop\PLsql\pl.sql
-Enter value for r: 101
-old   9: r :=&r;
-new   9: r :=101;
-Enter value for bn: dbms
-old  10: bn :='&bn';
-new  10: bn :='dbms';
-
-PL/SQL procedure successfully completed.
-
-SQL> select * from borrower;
-
-    ROLLNO NAME                 NAMEOFBOOK           ISSUEDATE S
----------- -------------------- -------------------- --------- -
-       101 pooja                dbms                 06-JUL-25 R
-       102 divya                java                 04-AUG-25 I
-       103 dipti                css                  10-JUN-25 I
-
-SQL> select * from fine;
-
-    ROLLNO RDATE         AMOUNT
----------- --------- ----------
-       101 01-AUG-25        100
-       102 09-AUG-25         50
-       103 02-AUG-25        150
-       101 07-AUG-25       1650
-
-
-SQL> SELECT rollno,rdate,amount from fine where rollno =&r;
-Enter value for r: 102
-old   1: SELECT rollno,rdate,amount from fine where rollno =&r
-new   1: SELECT rollno,rdate,amount from fine where rollno =102
-
-    ROLLNO RDATE         AMOUNT
----------- --------- ----------
-       102 09-AUG-25         50
-
-SQL>
-
-
-
+declare 
+r number(3);
+bn varchar(20);
+amt number(6,2);
+rd date;
+di date;
+day number(3);
+begin
+r :=&r;
+bn :='&bn';
+select issuedate into di from Borrower where rollno=r and nameofbook=bn and status='I';
+rd :=sysdate;
+day :=rd - di;
+if day<15 then
+dbms_output.put_line('No Fine');
+update Borrower set status='R' where rollno=r and nameofbook=bn;
+elsif day>15 and day<30 then 
+amt :=day*5;
+update borrower set status='R' where rollno=r and nameofbook=bn;
+elsif day>30 then
+amt :=day*50;
+update borrower set status='R' where rollno=r and nameofbook=bn;
+else
+dbms_output.put_line('no record found');
+end if;
+if amt>0 then
+insert into fine values(r,rd,amt);
+end if;
+end;
+/
