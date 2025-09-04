@@ -1,0 +1,117 @@
+SQL*Plus: Release 21.0.0.0.0 - Production on Thu Sep 4 09:47:49 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Wed Sep 03 2025 14:58:32 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> select * from student_mark;
+
+    ROLLNO NAME                 TOTAL_MARK
+---------- -------------------- ----------
+       101 prajakta                   1200
+       102 pranat                     1000
+       103 maahi                       900
+       104 pooja                       800
+
+SQL> select * from student_result;
+
+    ROLLNO NAME                 GRADE
+---------- -------------------- --------------------
+       102 pranat               1st class with dist.
+       101 prajakta             1st class with dist.
+       103 maahi                1st class
+       104 pooja                Fail
+
+SQL> insert into student_mark (rollno,name,total_mark) values (105,'anuj',899);
+
+1 row created.
+
+SQL> insert into student_mark (rollno,name,total_mark) values (106,'divya',925);
+
+1 row created.
+
+SQL> set serveroutput on
+
+SQL> @C:\Users\Prajakta\Desktop\plsqlplus\prog6.sql
+
+Procedure created.
+
+SQL> @C:\Users\Prajakta\Desktop\plsqlplus\prog9.sql
+101prajakta1st class with dist.
+102pranat1st class with dist.
+103maahi1st class
+104poojaFail
+105anuj2nd class
+106divya1st class
+
+PL/SQL procedure successfully completed.
+
+
+SQL> select * from student_mark;
+
+    ROLLNO NAME                 TOTAL_MARK
+---------- -------------------- ----------
+       101 prajakta                   1200
+       102 pranat                     1000
+       103 maahi                       900
+       104 pooja                       800
+       105 anuj                        899
+       106 divya                       925
+
+6 rows selected.
+
+SQL> select * from student_result;
+
+    ROLLNO NAME                 GRADE
+---------- -------------------- --------------------
+       102 pranat               1st class with dist.
+       101 prajakta             1st class with dist.
+       103 maahi                1st class
+       104 pooja                Fail
+       101 prajakta             1st class with dist.
+       102 pranat               1st class with dist.
+       103 maahi                1st class
+       104 pooja                Fail
+       105 anuj                 2nd class
+       106 divya                1st class
+
+10 rows selected.
+
+SQL>
+
+
+create or replace procedure  proc_grade (r in int, gt in int, grade out varchar2)
+is 
+begin
+if gt <= 1500 and gt >= 990 then
+grade:='1st class with dist.';
+elsif gt <= 989 and gt >= 900 then
+grade:='1st class';
+elsif gt <= 899 and gt >= 825 then
+grade:='2nd class';
+else
+grade:='Fail';
+end if;
+end;
+/
+
+declare
+rec student_mark % rowtype;
+grade varchar(20);
+begin
+for rec in (select rollno,name,total_mark from student_mark) loop
+proc_grade(rec.rollno,rec.total_mark, grade);
+dbms_output.put_line(rec.rollno|| rec.name||grade);
+insert into student_result values(rec.rollno,rec.name,grade);
+end loop;
+end;
+/
+
+
